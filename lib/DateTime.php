@@ -84,7 +84,7 @@ class DateTime extends \DateTime implements DateTimeInterface
 	 * @param string $format A format string accepted by get_format()
 	 * @return string formatted date and time string
 	 */
-	public function format($format=null)
+	public function format($format=null) : string
 	{
 		return parent::format(self::get_format($format));
 	}
@@ -117,13 +117,13 @@ class DateTime extends \DateTime implements DateTimeInterface
 	 * This needs to be overriden so it returns an instance of this class instead of PHP's \DateTime.
 	 * See http://php.net/manual/en/datetime.createfromformat.php
 	 */
-	public static function createFromFormat($format, $time, $tz = null)
+	public static function createFromFormat($format, $time, $tz = null) : \DateTime|false
 	{
 		$phpDate = $tz ? parent::createFromFormat($format, $time, $tz) : parent::createFromFormat($format, $time);
 		if (!$phpDate)
 			return false;
 		// convert to this class using the timestamp
-		$ourDate = new static(null, $phpDate->getTimezone());
+		$ourDate = new static('', $phpDate->getTimezone());
 		$ourDate->setTimestamp($phpDate->getTimestamp());
 		return $ourDate;
 	}
@@ -153,49 +153,49 @@ class DateTime extends \DateTime implements DateTimeInterface
 			$this->model->flag_dirty($this->attribute_name);
 	}
 
-	public function setDate($year, $month, $day)
+	public function setDate($year, $month, $day) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::setDate($year, $month, $day);
 	}
 
-	public function setISODate($year, $week , $day = 1)
+	public function setISODate($year, $week , $day = 1) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::setISODate($year, $week, $day);
 	}
 
-	public function setTime($hour, $minute, $second = 0, $microseconds = 0)
+	public function setTime($hour, $minute, $second = 0, $microseconds = 0) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::setTime($hour, $minute, $second);
 	}
 
-	public function setTimestamp($unixtimestamp)
+	public function setTimestamp($unixtimestamp) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::setTimestamp($unixtimestamp);
 	}
 
-	public function setTimezone($timezone)
+	public function setTimezone($timezone) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::setTimezone($timezone);
 	}
-	
-	public function modify($modify)
+
+	public function modify($modify) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::modify($modify);
 	}
-	
-	public function add($interval)
+
+	public function add($interval) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::add($interval);
 	}
 
-	public function sub($interval)
+	public function sub($interval) : \DateTime
 	{
 		$this->flag_dirty();
 		return parent::sub($interval);
